@@ -16,6 +16,7 @@ suppressPackageStartupMessages({
   library(data.table)
   library(DT)
   library(RColorBrewer)
+  library(circlize)
   
   # Load plotting packages 
   library(grid)
@@ -1735,10 +1736,12 @@ create_clinical_annotation <- function(clinical_data, patient_order, selected_co
     
     # Determine if numeric or categorical
     if (is.numeric(values)) {
-      # Numeric annotation (e.g., Age) - use color gradient
-      # NAs will be handled automatically by ComplexHeatmap
+      # Numeric annotation (e.g., Age) --white to green
       anno_params[[col]] <- values
-      # No color mapping needed for numeric (uses default gradient)
+      col_list[[col]] <- colorRamp2(
+        c(min(values, na.rm = TRUE), max(values, na.rm = TRUE)),
+        c("#ffffff", "#27ae60")  # White → Green
+      )
       
     } else {
       # Categorical annotation (e.g., Sex, Diagnosis)
