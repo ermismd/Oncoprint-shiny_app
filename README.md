@@ -7,6 +7,19 @@ An interactive R Shiny application for visualizing genomic alterations in cancer
 
 ---
 
+Origin & Attribution
+This application was inspired by and initially based on the oncoprint visualization component of the STSPipeline project:
+
+Funkhouser, A. & Shern, J.F. STSPipeline: Molecular Characterization of Pediatric Sarcomas.
+NIH / Yale School of Medicine.
+GitHub: Earendur01/STSPipeline
+Forked version: ermismd/STSPipeline
+
+The original pipeline generated static oncoprint figures via ComplexHeatmap as part of a larger Python/R batch workflow for pediatric soft tissue sarcoma data.
+This project represents a substantial rewrite and redesign of those oncoprint scripts into a fully interactive Shiny application. The core rendering logic, UI, data handling, clustering, germline/somatic encoding, CNV integration, and export functionality were all redesigned and rebuilt from the ground up.
+
+---
+
 ## Features
 
 - Upload and integrate multiple data types: SNV mutations, CNVs, fusions, and clinical data
