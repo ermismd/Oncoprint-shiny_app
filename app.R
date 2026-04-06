@@ -1748,18 +1748,17 @@ create_clinical_annotation <- function(clinical_data, patient_order, selected_co
       values[is.na(values)] <- "NA"
       
       # Get unique categories including "NA"
-      categories <- sort(unique(values))
-      n_categories <- length(categories)
+      n_categories <- length(unique(values))
       
       # Assign colors based on number of categories
       if (n_categories <= 2) {
-        # Binary: use contrasting colors
+        categories <- sort(unique(values), decreasing = TRUE)  
         colors <- c("#3498db", "#e74c3c")  # Blue, Red
       } else if (n_categories <= 8) {
-        # Small set: use Set2 palette
+        categories <- sort(unique(values))
         colors <- brewer.pal(max(3, min(n_categories, 8)), "Set2")[1:n_categories]
       } else {
-        # Large set: use rainbow
+        categories <- sort(unique(values))
         colors <- rainbow(n_categories)
       }
       
@@ -1795,7 +1794,9 @@ create_clinical_annotation <- function(clinical_data, patient_order, selected_co
       annotation_name_side = "left",
       annotation_name_gp = gpar(fontsize = 9, fontface = "bold"),
       simple_anno_size = unit(4, "mm"),
-      gap = unit(1, "mm")
+      gap = unit(1, "mm"),
+      border = TRUE,
+      gp = gpar(col = "black", lwd = 0.5) # cell level column borders
     )
   )
   
