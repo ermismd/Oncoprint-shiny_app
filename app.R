@@ -2053,13 +2053,44 @@ create_heatmap_object <- function(mutation_matrix, somatic_map, germline_map,
   }
   
   
+  
+  
+  # ============================================================================
+  # REORDER MUTATION MATRIX AND MAPS IF COLUMN_ORDER IS SPECIFIED
+  # This ensures clinical annotations align correctly with heatmap columns
+  # ============================================================================
+  
+  if (!is.null(column_order)) {
+    # Get original column names before reordering
+    original_cols <- colnames(mutation_matrix)
+    
+    # Reorder mutation matrix columns
+    mutation_matrix <- mutation_matrix[, column_order, drop = FALSE]
+    
+    # Reorder column_split if it exists (for FILE clustering)
+    if (!is.null(column_split)) {
+      # reorder it to match column_order
+      reorder_indices <- match(column_order, original_cols)
+      column_split <- column_split[reorder_indices]
+    }
+    
+  
+    # Don't pass column_order to Heatmap() - matrix is already ordered
+    column_order <- NULL
+  }
+  
+  
+  
   # ============================================================================
   # Create clinical annotation if requested
   # ============================================================================
   
   clinical_annot <- NULL
+  
+  
   if (!is.null(clinical_data) && !is.null(clinical_annotation_cols) && length(clinical_annotation_cols) > 0) {
-    patient_order <- if (!is.null(column_order)) column_order else colnames(mutation_matrix)
+    #patient_order <- if (!is.null(column_order)) column_order else colnames(mutation_matrix)
+    patient_order <- colnames(mutation_matrix)
     clinical_annot <- create_clinical_annotation(clinical_data, patient_order, clinical_annotation_cols)
   }
   ht <- Heatmap(
